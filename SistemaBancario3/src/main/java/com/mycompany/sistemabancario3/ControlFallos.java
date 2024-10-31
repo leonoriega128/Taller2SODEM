@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.sistemabancario;
+package com.mycompany.sistemabancario3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -83,7 +83,6 @@ class Saludar extends TimerTask {
                 if (mensaje.compareTo("Hola!") != 0) {
                     System.out.println("Servidor caído...");
                     // Invocar algoritmo de reemplazo.
-                     activarServidorAlternativo();
                 }
             } catch (UnknownHostException ex) {                
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,18 +94,6 @@ class Saludar extends TimerTask {
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-    private void activarServidorAlternativo() {
-         try {
-                ServerSocket server = new ServerSocket(25010);
-                while (true) {
-                    Socket s = server.accept();
-                    canal = new HiloComunicacion(s);
-                    canal.start();
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
-            } 
     }
 }
 
@@ -120,7 +107,8 @@ public class ControlFallos extends Thread {
     public ControlFallos(String id, String idControl) {
         this.id = id;
         idControlar = idControl;
-        planificador = new Timer(); 
+        planificador = new Timer();
+        
         tareaSaludar = new Saludar(this.id, idControlar);
     }
 
