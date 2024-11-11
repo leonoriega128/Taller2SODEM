@@ -41,8 +41,8 @@ public class MovimientoDAO {
     
     public void EliminarMovimiento(MovimientoDTO mov){
         try {
-            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbbanco",
-                    "root", "SoD#2024");
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3308/dbbanco",
+                    "root", "root");
             PreparedStatement pstmt = cnx.prepareStatement("DELETE FROM movimientos WHERE id=?");
             pstmt.setInt(1, mov.getId());
             pstmt.executeUpdate();

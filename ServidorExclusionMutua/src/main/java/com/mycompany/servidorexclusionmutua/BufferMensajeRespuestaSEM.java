@@ -13,10 +13,7 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Germán
- */
+ 
 public class BufferMensajeRespuestaSEM {
     boolean token;
     Queue<String> solicitudes;

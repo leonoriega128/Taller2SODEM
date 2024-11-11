@@ -13,10 +13,7 @@ import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Germán
- */
+ 
 public class BufferMensajeRespuestaSB {
     
     Semaphore sem;

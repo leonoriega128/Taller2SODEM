@@ -19,10 +19,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Germán
- */
+ 
 public class CajeroAutomatico {
 
     Scanner reader;
@@ -101,7 +98,7 @@ public class CajeroAutomatico {
                     System.out.println("Ingrese el monto a depositar:");
                     float monto = objCajero.reader.nextFloat();
 
-                    s = new Socket(InetAddress.getByName("127.0.0.1"), 25000);
+                    s = new Socket(InetAddress.getByName("127.0.0.1"), 25000); 
                     BufferedReader bf = new BufferedReader(new InputStreamReader(s.getInputStream()));
                     pw = new PrintWriter(s.getOutputStream(), true);
 
@@ -125,6 +122,34 @@ public class CajeroAutomatico {
                     Logger.getLogger(CajeroAutomatico.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+                   try {
+                    System.out.println("Ingrese el monto a depositar:");
+                    float monto = objCajero.reader.nextFloat();
+
+                    s = new Socket(InetAddress.getByName("127.0.0.1"), 25001); 
+                    BufferedReader bf = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                    pw = new PrintWriter(s.getOutputStream(), true);
+
+                    pw.println("depositar," + objCajero.cuenta + "," + monto);
+                    String salida = bf.readLine();
+                    if (salida.compareTo("1") == 0) {
+                        System.out.println("Operación exitosa");
+                        objCajero.bmr.SolicitarToken("127.0.0.1:40000");
+                        String cadena = "En Cajero Automático: \n";
+                        cadena += "Se deposito de cuenta " + objCajero.cuenta
+                                + " la cantidad de pesos " + monto + "\n";
+                        objCajero.fileOutputStream.write(cadena.getBytes());
+                        objCajero.fileOutputStream.close();
+                        objCajero.bmr.DevolverToken();
+                    } else {
+                        System.out.println("Operación desconocida");
+                    }
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(CajeroAutomatico.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(CajeroAutomatico.class.getName()).log(Level.SEVERE, null, ex);
+                } 
+                   
                     break;
                 case 3:
                     // Transferir 

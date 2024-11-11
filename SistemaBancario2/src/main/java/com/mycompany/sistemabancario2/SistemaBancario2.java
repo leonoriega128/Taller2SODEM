@@ -24,12 +24,12 @@ public class SistemaBancario2 {
         try {
             ControlFallos cf = new ControlFallos("2", "1");            
             cf.start();
-            ServerSocket ss = new ServerSocket(25010);
+            ServerSocket ss = new ServerSocket(25600);
             BufferMensajeRespuestaSB bmr = new BufferMensajeRespuestaSB();
             while(true){
                 System.out.println("Esperando conexiones");
                 Socket s = ss.accept();
-                ManejoComunicacion tC = new ManejoComunicacion(s, bmr, "127.0.0.1", "25010");
+                ManejoComunicacion tC = new ManejoComunicacion(s, bmr, "127.0.0.1", "25600");
                 tC.start();
             }                        
         } catch (IOException ex) {

@@ -12,10 +12,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Germán
- */
+ 
 public class ManejoComunicacion extends Thread{
     
     Socket sock;

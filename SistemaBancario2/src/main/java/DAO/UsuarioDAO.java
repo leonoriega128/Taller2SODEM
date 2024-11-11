@@ -41,8 +41,8 @@ public class UsuarioDAO {
     public void ActualizarPassword(UsuarioDTO usuario){
     
         try {
-            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbbanco",
-                    "root", "SoD#2024");
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3308/dbbanco",
+                    "root", "root");
             String sql = "UPDATE usuarios SET password=? WHERE id = ?";
             PreparedStatement pstmt = cnx.prepareStatement(sql);
             pstmt.setString(1, usuario.getPassword());
@@ -55,8 +55,8 @@ public class UsuarioDAO {
     
     public void EliminarUsuario(UsuarioDTO usuario){
         try {
-            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbbanco",
-                    "root", "SoD#2024");
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3308/dbbanco",
+                    "root", "root");
             PreparedStatement pstmt = cnx.prepareStatement("DELETE FROM usuarios WHERE id = ?");
             pstmt.setInt(1, usuario.getId());
             pstmt.executeUpdate();
@@ -68,8 +68,8 @@ public class UsuarioDAO {
     public List<UsuarioDTO> RecuperarUsuarios(String cadenaBusqueda){
         List<UsuarioDTO> usuarios = new ArrayList<>();
         try {
-            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbbanco",
-                    "root", "SoD#2024");
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3308/dbbanco",
+                    "root", "root");
             PreparedStatement pstmt = cnx.prepareStatement("SELECT * FROM "
                     + "usuarios WHERE nombre LIKE ? OR apellido LIKE ? OR "
                     + "username LIKE ?");

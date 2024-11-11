@@ -40,8 +40,8 @@ public class CuentaDAO {
     public CuentaDTO RecuperarCuenta(CuentaDTO cuenta){
         CuentaDTO c = null;
         try {
-            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbbanco",
-                    "root", "SoD#2024");
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3308/dbbanco",
+                    "root", "root");
             String sql = "SELECT * FROM cuentas WHERE id=?";
             PreparedStatement pstmt = cnx.prepareStatement(sql);
             pstmt.setInt(1, cuenta.getId());
@@ -62,8 +62,8 @@ public class CuentaDAO {
     
     public void AgregarCuenta(CuentaDTO cuenta){
         try {
-            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbbanco",
-                    "root", "SoD#2024");
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3308/dbbanco",
+                    "root", "root");
             String sql = "INSERT INTO cuentas (fechaApertura, saldo, usuarios_id) "
                     + "VALUES (?,?,?)";
             PreparedStatement pstmt = cnx.prepareStatement(sql);
@@ -85,8 +85,8 @@ public class CuentaDAO {
     
     public void EliminarCuenta(CuentaDTO cuenta){
         try {
-            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbbanco",
-                    "root", "SoD#2024");
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3308/dbbanco",
+                    "root", "root");
             PreparedStatement stmt = cnx.prepareStatement("DELETE FROM cuentas WHERE id=?");
             stmt.setInt(1, cuenta.getId());
             stmt.executeUpdate();

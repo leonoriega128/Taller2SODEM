@@ -22,14 +22,14 @@ public class SistemaBancario3 {
     public static void main(String[] args) {
         
         try {
-            ControlFallos cf = new ControlFallos("3", "2");            
+            ControlFallos cf = new ControlFallos("3", "1");            
             cf.start();
-            ServerSocket ss = new ServerSocket(25100);
+            ServerSocket ss = new ServerSocket(25900);
             BufferMensajeRespuestaSB bmr = new BufferMensajeRespuestaSB();
             while(true){
                 System.out.println("Esperando conexiones");
                 Socket s = ss.accept();
-                ManejoComunicacion tC = new ManejoComunicacion(s, bmr, "127.0.0.1", "25100");
+                ManejoComunicacion tC = new ManejoComunicacion(s, bmr, "127.0.0.1", "25900");
                 tC.start();
             }                        
         } catch (IOException ex) {

@@ -13,6 +13,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -51,10 +53,12 @@ class Saludar extends TimerTask {
     String idControlar;
     String id;
     HiloComunicacion canal;
-
+    static List<String> idsProceso = new ArrayList<>();
+    static String idCoordinador = null;
     public Saludar(String id, String idControl) {
         this.id = id;
         idControlar = idControl;
+        idsProceso.add(id); // Agregar cada proceso al anillo
     }
 
     @Override
@@ -74,6 +78,7 @@ class Saludar extends TimerTask {
         } else {
             try {
                 Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 25001);
+                System.out.println(s);
                 PrintWriter pw = new PrintWriter(s.getOutputStream(),true);
                 BufferedReader bf = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 pw.println("Hola!");
@@ -82,16 +87,45 @@ class Saludar extends TimerTask {
                 String mensaje = bf.readLine();
                 if (mensaje.compareTo("Hola!") != 0) {
                     System.out.println("Servidor caído...");
-                    // Invocar algoritmo de reemplazo.
+                    // Invocar algoritmo de reemplazo. 
+                    invocarAlgoritmoAnillo();
                 }
             } catch (UnknownHostException ex) {                
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
             } catch(SocketException ex){
-                System.out.println("Servidor caído");
+                System.out.println("Servidor caído.");
+                 invocarAlgoritmoAnillo();
             } catch (IOException ex) {                
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+     private void activarServidorAlternativo() {
+         try {
+                ServerSocket server = new ServerSocket(25100);
+                while (true) {
+                    Socket s = server.accept();
+                    canal = new HiloComunicacion(s);
+                    canal.start();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+    }
+    private void invocarAlgoritmoAnillo() {
+        System.out.println("Iniciando el algoritmo de anillo para elegir un nuevo coordinador.");
+        List<String> idsEleccion = new ArrayList<>(idsProceso);
+        
+        // Determinar el nuevo coordinador basado en el id más alto
+        String nuevoCoordinador = idsEleccion.stream().max(String::compareTo).orElse(null);
+        if (nuevoCoordinador != null) {
+            idCoordinador = nuevoCoordinador;
+            System.out.println("Nuevo coordinador elegido: " + idCoordinador);
+            // Activar el nuevo servidor coordinador
+            if (id.equals(idCoordinador)) {
+                activarServidorAlternativo();
             }
         }
     }
