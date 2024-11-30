@@ -77,8 +77,7 @@ class Saludar extends TimerTask {
 
         } else {
             try {
-                Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 25001);
-                System.out.println(s);
+                Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 25001); 
                 PrintWriter pw = new PrintWriter(s.getOutputStream(),true);
                 BufferedReader bf = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 pw.println("Hola!");
@@ -86,15 +85,14 @@ class Saludar extends TimerTask {
                 Thread.sleep(3000);
                 String mensaje = bf.readLine();
                 if (mensaje.compareTo("Hola!") != 0) {
-                    System.out.println("Servidor caído...");
-                    // Invocar algoritmo de reemplazo. 
+                    System.out.println("Servidor caído..."); 
                     invocarAlgoritmoAnillo();
                 }
             } catch (UnknownHostException ex) {                
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
             } catch(SocketException ex){
-                System.out.println("Servidor caído.");
-                 invocarAlgoritmoAnillo();
+                System.out.println("Servidor caído."); 
+                invocarAlgoritmoAnillo();
             } catch (IOException ex) {                
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
@@ -115,19 +113,17 @@ class Saludar extends TimerTask {
             } 
     }
     private void invocarAlgoritmoAnillo() {
-        System.out.println("Iniciando el algoritmo de anillo para elegir un nuevo coordinador.");
-        List<String> idsEleccion = new ArrayList<>(idsProceso);
-        
-        // Determinar el nuevo coordinador basado en el id más alto
-        String nuevoCoordinador = idsEleccion.stream().max(String::compareTo).orElse(null);
-        if (nuevoCoordinador != null) {
-            idCoordinador = nuevoCoordinador;
-            System.out.println("Nuevo coordinador elegido: " + idCoordinador);
-            // Activar el nuevo servidor coordinador
-            if (id.equals(idCoordinador)) {
-                activarServidorAlternativo();
-            }
-        }
+           try (Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 25900); // Se cierra automáticamente
+         PrintWriter pw = new PrintWriter(s.getOutputStream(), true)) {  
+                pw.flush(); 
+                pw.println("envio este token desdes el servidor 2! " + id); 
+                
+            } catch (UnknownHostException ex) {                
+                Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
+            } catch(SocketException ex){
+            } catch (IOException ex) {                
+                Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
+            }  
     }
 }
 

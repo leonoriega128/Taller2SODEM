@@ -39,7 +39,7 @@ class HiloComunicacion extends Thread {
             BufferedReader bf = new BufferedReader(new InputStreamReader(canal.getInputStream()));
             PrintWriter pw = new PrintWriter(canal.getOutputStream(), true);
             String mensaje = bf.readLine();
-            System.out.println(mensaje);
+            System.out.println(mensaje + "");
             if (mensaje.compareTo("Hola!") == 0) {
                 pw.println("Hola!");
             }
@@ -69,37 +69,32 @@ class Saludar extends TimerTask {
                 while (true) {
                     Socket s = server.accept();
                     canal = new HiloComunicacion(s);
-                    canal.start();
+                    canal.start();                    
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else {
-            try {
+            try { 
                 Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 25001);
-                PrintWriter pw = new PrintWriter(s.getOutputStream(),true);
+
+                // Leer mensaje del servidor
                 BufferedReader bf = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                pw.println("Hola!");
-                pw.flush();
-                Thread.sleep(3000);
                 String mensaje = bf.readLine();
+                System.out.println("Mensaje recibido: " + mensaje);
+                
                 if (mensaje.compareTo("Hola!") != 0) {
-                    System.out.println("Servidor caído...");
-                    // Invocar algoritmo de reemplazo.
-                    invocarAlgoritmoAnillo();
+                    System.out.println("Servidor caído..."); 
                 }
             } catch (UnknownHostException ex) {                
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
             } catch(SocketException ex){
-                System.out.println("Servidor caído");
+                //System.out.println("Servidor caído"); 
                 invocarAlgoritmoAnillo();
             } catch (IOException ex) {                
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+            } }
         
     }
      private void activarServidorAlternativo() {
@@ -114,8 +109,9 @@ class Saludar extends TimerTask {
                 Logger.getLogger(Saludar.class.getName()).log(Level.SEVERE, null, ex);
             } 
     }
-    private void invocarAlgoritmoAnillo() {
+    private void invocarAlgoritmoAnillo() { 
         System.out.println("Iniciando el algoritmo de anillo para elegir un nuevo coordinador.");
+        idsProceso.add("2");
         List<String> idsEleccion = new ArrayList<>(idsProceso);
         
         // Determinar el nuevo coordinador basado en el id más alto

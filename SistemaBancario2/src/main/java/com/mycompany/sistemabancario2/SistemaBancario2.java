@@ -30,7 +30,7 @@ public class SistemaBancario2 {
                 System.out.println("Esperando conexiones");
                 Socket s = ss.accept();
                 ManejoComunicacion tC = new ManejoComunicacion(s, bmr, "127.0.0.1", "25600");
-                tC.start();
+                tC.start();                
             }                        
         } catch (IOException ex) {
             Logger.getLogger(SistemaBancario2.class.getName()).log(Level.SEVERE, null, ex);
